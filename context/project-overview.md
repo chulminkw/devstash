@@ -346,6 +346,12 @@ Payments and subscription lifecycle handled by **[Stripe](https://stripe.com/doc
 | 📐 Layout | Collapsible sidebar + main grid/list workspace + full-screen item editor |
 | 📱 Responsive | Mobile drawer for sidebar, touch-optimised icons and buttons |
 
+### Screenshots
+
+Refer to the screenshots below as a base for the dashboard. it does not have to be exact. Use it as a reference:
+- @context/screenshots/dashboard-ui-main.png
+- @context/screenshots/dashboard-ui-drawer.png
+
 ---
 
 ## 🔌 API Architecture
