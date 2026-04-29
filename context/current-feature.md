@@ -22,3 +22,12 @@
 - Created `/dashboard` route with layout and page
 - Implemented top bar with DevStash logo, search input (display only), "New Collection" and "+ New Item" buttons
 - Added sidebar and main area placeholders
+
+### 2026-04-28 — Dashboard UI Phase 2
+- Added collapsible sidebar (desktop: icon-only at w-12, expanded at w-56)
+- Item types list with Lucide icons and counts, each linking to `/items/[slug]`
+- Favorite collections (yellow star) and all collections (folder icon + count) in sidebar
+- User avatar area at the bottom with name, email, and settings icon
+- `PanelLeft` toggle button in topbar controls sidebar open/close
+- Mobile: sidebar always renders as a ShadCN Sheet drawer
+- Fixed ShadCN dark mode bug: changed `@custom-variant dark (&:is(.dark *))` to `(&:where(.dark, .dark *))` so `html.dark` activates dark CSS variables correctly
