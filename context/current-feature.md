@@ -1,6 +1,6 @@
 # Current Feature
 
-Prisma + Neon PostgreSQL Setup
+Seed Sample Data
 
 ## Status
 
@@ -8,20 +8,21 @@ In Progress
 
 ## Goals
 
-- Install and configure Prisma 7 (has breaking changes — read upgrade guide before implementing)
-- Set up Neon PostgreSQL (serverless) as the database
-- Create initial schema based on data models in `@context/project-overview.md`
-- Include NextAuth required models (Account, Session, VerificationToken)
-- Add appropriate indexes and cascade deletes
-- Always create migrations (`prisma migrate dev`), never push directly to the database
+- Create `prisma/seed.ts` to populate the database with sample data
+- Demo user: `demo@devstash.io`, name `Demo User`, password `12345678` hashed with bcryptjs (12 rounds), `isPro: false`, `emailVerified: now`
+- 7 system item types: Snippet, Prompt, Command, Note, File, Image, Link (with Lucide icon names and hex colors, `isSystem: true`)
+- 5 collections with items:
+  - **React Patterns** — 3 TypeScript snippets (custom hooks, component patterns, utility functions)
+  - **AI Workflows** — 3 prompts (code review, documentation generation, refactoring)
+  - **DevOps** — 1 snippet, 1 command, 2 links (real URLs)
+  - **Terminal Commands** — 4 commands (git, docker, process management, package manager)
+  - **Design Resources** — 4 links (real URLs: CSS/Tailwind, component libraries, design systems, icon libraries)
 
 ## Notes
 
-- Prisma 7 upgrade guide: https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7
-- Prisma quickstart: https://www.prisma.io/docs/getting-started/prisma-orm/quickstart/prisma-postgres
-- `DATABASE_URL` = Neon development branch connection string
-- Production will use a separate Neon branch
-- Full spec: `@context/features/database-spec.md`
+- Full spec: `@context/features/seed-spec.md`
+- Register the seed script in `package.json` under `"prisma": { "seed": "tsx prisma/seed.ts" }`
+- Run with `npx prisma db seed`
 
 ## History
 
@@ -54,3 +55,11 @@ In Progress
 - Collections grid with CollectionCard component (name, item count, description, type icons)
 - Pinned items and recent items sections with ItemCard component
 - Refactored page.tsx into a server component; extracted interactive topbar + sidebar into DashboardShell client component
+
+### 2026-04-29 — Prisma 7 + Neon PostgreSQL Setup
+- Installed Prisma 7 with `@prisma/adapter-pg` driver adapter
+- Created `prisma/schema.prisma` with full data model (NextAuth + app models)
+- Added `prisma.config.ts` (datasource URL lives here, not in schema — Prisma 7 change)
+- Created `src/lib/prisma.ts` global singleton using `PrismaPg` adapter
+- Ran initial migration (`20260429021423_init`) against Neon dev branch
+- Added `scripts/test-db.ts` to verify connection
