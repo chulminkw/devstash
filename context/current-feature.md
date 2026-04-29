@@ -1,6 +1,6 @@
 # Current Feature
 
-Seed Sample Data
+Dashboard Items — Real Data
 
 ## Status
 
@@ -8,21 +8,17 @@ In Progress
 
 ## Goals
 
-- Create `prisma/seed.ts` to populate the database with sample data
-- Demo user: `demo@devstash.io`, name `Demo User`, password `12345678` hashed with bcryptjs (12 rounds), `isPro: false`, `emailVerified: now`
-- 7 system item types: Snippet, Prompt, Command, Note, File, Image, Link (with Lucide icon names and hex colors, `isSystem: true`)
-- 5 collections with items:
-  - **React Patterns** — 3 TypeScript snippets (custom hooks, component patterns, utility functions)
-  - **AI Workflows** — 3 prompts (code review, documentation generation, refactoring)
-  - **DevOps** — 1 snippet, 1 command, 2 links (real URLs)
-  - **Terminal Commands** — 4 commands (git, docker, process management, package manager)
-  - **Design Resources** — 4 links (real URLs: CSS/Tailwind, component libraries, design systems, icon libraries)
+- Create `src/lib/db/items.ts` with data fetching functions
+- Fetch pinned and recent items directly in the dashboard server component (replace mock data)
+- Item card icon and border color derived from the item type
+- Display item type, tags, and all other existing card fields
+- If there are no pinned items, the Pinned section should not render
+- Keep the current design and layout
 
 ## Notes
 
-- Full spec: `@context/features/seed-spec.md`
-- Register the seed script in `package.json` under `"prisma": { "seed": "tsx prisma/seed.ts" }`
-- Run with `npx prisma db seed`
+- Reference screenshot: `@context/screenshots/dashboard-ui-main.png`
+- Full spec: `@context/features/dashboard-items-spec.md`
 
 ## History
 
@@ -63,3 +59,16 @@ In Progress
 - Created `src/lib/prisma.ts` global singleton using `PrismaPg` adapter
 - Ran initial migration (`20260429021423_init`) against Neon dev branch
 - Added `scripts/test-db.ts` to verify connection
+
+### 2026-04-29 — Seed Sample Data
+- Installed bcryptjs and tsx
+- Created `prisma/seed.ts` with demo user, 7 system item types, and 18 items across 5 collections
+- Registered seed in `prisma.config.ts` (`migrations.seed`)
+- Updated `scripts/test-db.ts` to display all seeded data for verification
+
+### 2026-04-29 — Dashboard Collections — Real Data
+- Created `src/lib/db/collections.ts` with `getCollections()` and `getDashboardStats()` functions
+- Replaced mock collections with real Prisma queries in the dashboard server component
+- Collection card border color derived from most-used item type color
+- Type icons shown with their color, computed from actual items in each collection
+- Stats cards now reflect real DB counts
