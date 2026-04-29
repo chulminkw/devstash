@@ -2,9 +2,15 @@ import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { StatsCards } from "@/components/dashboard/stats-cards";
 import { CollectionCard } from "@/components/dashboard/collection-card";
 import { ItemCard } from "@/components/dashboard/item-card";
-import { mockCollections, mockItems } from "@/lib/mock-data";
+import { getCollections, getDashboardStats } from "@/lib/db/collections";
+import { mockItems } from "@/lib/mock-data";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const [collections, stats] = await Promise.all([
+    getCollections(),
+    getDashboardStats(),
+  ]);
+
   const pinnedItems = mockItems.filter((i) => i.isPinned);
   const recentItems = [...mockItems]
     .sort((a, b) =>
@@ -21,7 +27,7 @@ export default function DashboardPage() {
           <p className="text-sm text-muted-foreground">Your developer knowledge hub</p>
         </div>
 
-        <StatsCards />
+        <StatsCards stats={stats} />
 
         {/* Collections */}
         <section className="mb-8">
@@ -32,7 +38,7 @@ export default function DashboardPage() {
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {mockCollections.map((col) => (
+            {collections.map((col) => (
               <CollectionCard key={col.id} collection={col} />
             ))}
           </div>

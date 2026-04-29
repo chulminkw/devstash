@@ -1,26 +1,12 @@
 import { Star, MoreHorizontal } from "lucide-react";
-import { mockItems, mockItemTypes } from "@/lib/mock-data";
+import type { CollectionWithMeta } from "@/lib/db/collections";
 
-interface Collection {
-  id: string;
-  name: string;
-  description: string;
-  itemCount: number;
-  isFavorite: boolean;
-}
-
-export function CollectionCard({ collection }: { collection: Collection }) {
-  const typeIds = [
-    ...new Set(
-      mockItems.filter((i) => i.collectionId === collection.id).map((i) => i.typeId)
-    ),
-  ];
-  const types = typeIds
-    .map((id) => mockItemTypes.find((t) => t.id === id))
-    .filter(Boolean);
-
+export function CollectionCard({ collection }: { collection: CollectionWithMeta }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4 hover:border-foreground/20 transition-colors cursor-pointer">
+    <div
+      className="rounded-lg border bg-card p-4 hover:brightness-110 transition-all cursor-pointer"
+      style={{ borderColor: collection.accentColor ?? "hsl(var(--border))" }}
+    >
       <div className="flex items-start justify-between mb-1">
         <div className="flex items-center gap-1.5">
           <h3 className="font-medium text-sm">{collection.name}</h3>
@@ -33,18 +19,19 @@ export function CollectionCard({ collection }: { collection: Collection }) {
         </button>
       </div>
       <p className="text-xs text-muted-foreground mb-3">
-        {collection.itemCount} items
+        {collection.itemCount} {collection.itemCount === 1 ? "item" : "items"}
       </p>
       <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
         {collection.description}
       </p>
       <div className="flex items-center gap-1.5">
-        {types.map((type) => (
+        {collection.types.map((type) => (
           <span
-            key={type!.id}
+            key={type.id}
             className="text-xs text-muted-foreground border border-border rounded px-1.5 py-0.5 font-mono"
+            style={{ borderColor: type.color ?? undefined, color: type.color ?? undefined }}
           >
-            {type!.icon}
+            {type.icon}
           </span>
         ))}
       </div>
